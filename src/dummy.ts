@@ -16,5 +16,9 @@ export const courses: Course[] = [{
         courseNumber: '62598',
         title: 'Kunstig intelligens i computerspil',
         participants: students
+    }, {
+        courseNumber: '12345',
+        title: 'Giraffer',
+        participants: students
     }
 ]
