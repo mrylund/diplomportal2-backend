@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "nodemon --config nodemon.json src/main.ts",
-    "build": "tsc && npm run start",
+    "build": "tsc",
     "start": "node dist/main.js",
     "postinstall": "tsc"
   },
