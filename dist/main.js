@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const webserver_1 = require("./webserver");
 const webServer = new webserver_1.default();
-const PORT = 8000;
+const PORT = 443;
 (async () => {
     console.log('Initializing');
     await webServer.start(PORT);
