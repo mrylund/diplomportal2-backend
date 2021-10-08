@@ -11,14 +11,17 @@ export const students: Student[] = [{
 export const courses: Course[] = [{
         courseNumber: '62582',
         title: 'Komplekse systemer og Devops',
-        participants: students
+        participants: students,
+        weekDay: [{day: 'Tirsdag', period: 0}]
     }, {
         courseNumber: '62598',
         title: 'Kunstig intelligens i computerspil',
-        participants: students
+        participants: students,
+        weekDay: [{day: 'Tirsdag', period: 1}]
     }, {
         courseNumber: '12345',
         title: 'Giraffer',
-        participants: students
+        participants: students,
+        weekDay: [{day: 'Fredag', period: 1}]
     }
 ]
