@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 import * as dummy from "./dummy"
+import { User } from './login/user'
+import { JWTHandler } from './login/jwtHandler'
+import { resolve } from "path/posix"
 
 
 export const getCourses = async (req: Request, res: Response) => {
@@ -37,4 +40,11 @@ export const getStudentById = async (req: Request, res: Response) => {
     : res.status(400).send({
         message: `Could not fetch student with id ${req.params.id}.`
     })
+}
+
+
+export const generateJwtToken = async (req: Request, res: Response) => {
+    const user = new User("Patrick", "hej123", "p@hej.dk")
+    const jwtHandler = new JWTHandler()
+    res.json(jwtHandler.generateJwtToken(user))
 }

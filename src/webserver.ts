@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { getCourseById, getCourses, getStudentById, getStudents } from './routes'
+import { generateJwtToken, getCourseById, getCourses, getStudentById, getStudents } from './routes'
 import * as cors from 'cors'
 import { access } from 'fs'
 
@@ -30,6 +30,8 @@ export default class WebServer {
         this.app.get('/students', getStudents)
 
         this.app.get('/students/:id', getStudentById)
+
+        this.app.get('/token', generateJwtToken)
 
         // Basic error handling
         this.app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {

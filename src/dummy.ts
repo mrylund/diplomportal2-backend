@@ -13,7 +13,7 @@ export const courses: Course[] = [{
     courseNumber: '12345',
     title: 'Giraffer',
     // participants: students,
-    weekDay: 'f0'
+    weekDay: 'fr0'
 }]
 
 export const schedule: Day[] = courses.map(course => {
