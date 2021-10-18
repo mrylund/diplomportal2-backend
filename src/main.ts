@@ -1,7 +1,9 @@
 import WebServer from "./webserver"
+import { PrismaClient } from '@prisma/client'
 
 const webServer = new WebServer()
 const PORT = Number(process.env.PORT) || 443;
+export const prisma = new PrismaClient();
 
 (async () => {
         console.log('Initializing');

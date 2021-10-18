@@ -2,12 +2,10 @@ import { Request, Response } from "express"
 import * as dummy from "./dummy"
 import { User } from './login/user'
 import { JWTHandler } from './login/jwtHandler'
-import { resolve } from "path/posix"
-
+import { prisma } from './main'
 
 export const getCourses = async (req: Request, res: Response) => {
-    // Hentes fra db senere, bla bla
-    const courses = dummy.courses
+    const courses = await prisma.courses.findMany()
     courses
     ? res.json(courses)
     : res.status(400).send({

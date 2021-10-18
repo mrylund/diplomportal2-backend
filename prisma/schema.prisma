@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model courses {
+  id           Int     @id(map: "courses_pk") @default(autoincrement())
+  coursenumber String  @db.VarChar
+  title        String? @db.VarChar
+  weekday      String? @db.VarChar
+}
