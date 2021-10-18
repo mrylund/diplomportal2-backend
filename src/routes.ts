@@ -14,7 +14,7 @@ export const getCourses = async (req: Request, res: Response) => {
 }
 
 export const getCourseById = async (req: Request, res: Response) => {
-    const course = dummy.courses.find(course => course.courseNumber === req.params.id)
+    const course = await prisma.courses.findFirst({ where: { coursenumber: req.params.id } })
     course
     ? res.json(course)
     : res.status(400).send({
@@ -23,7 +23,7 @@ export const getCourseById = async (req: Request, res: Response) => {
 }
 
 export const getStudents = async (req: Request, res: Response) => {
-    const students = dummy.students
+    const students = await prisma.students.findMany()
     students
     ? res.json(students)
     : res.status(400).send({
@@ -32,11 +32,11 @@ export const getStudents = async (req: Request, res: Response) => {
 }
 
 export const getStudentById = async (req: Request, res: Response) => {
-    const student = dummy.students.find(student => student.studyNumber === req.params.id)
+    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id } })
     student
     ? res.json(student)
     : res.status(400).send({
-        message: `Could not fetch student with id ${req.params.id}.`
+        message: `Could not fetch student with studyNumber ${req.params.id}.`
     })
 }
 

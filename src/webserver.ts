@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { generateJwtToken, getCourseById, getCourses, getStudentById, getStudents } from './routes'
 import * as cors from 'cors'
-import { access } from 'fs'
+import { prisma } from './main'
 
 const corsOptions = {
     origin: true,
@@ -58,6 +58,7 @@ export default class WebServer {
     }
 
     stop(): Promise<void> {
+        prisma.$disconnect()
         return this.closer()
     }
 }
