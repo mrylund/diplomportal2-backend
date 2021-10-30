@@ -3,6 +3,7 @@ import * as dummy from "./dummy"
 import { User } from './login/user'
 import { JWTHandler } from './login/jwtHandler'
 import { prisma } from './main'
+import { LogIn } from "./login/logIn"
 
 export const getCourses = async (req: Request, res: Response) => {
     const courses = await prisma.courses.findMany()
@@ -41,8 +42,12 @@ export const getStudentById = async (req: Request, res: Response) => {
 }
 
 
-export const generateJwtToken = async (req: Request, res: Response) => {
-    const user = new User("Patrick", "hej123", "p@hej.dk")
+export const logIn = async (req: Request, res: Response) => {
+    const logIn = new LogIn()
+    res.json(await logIn.dtuLogin(req.query.ticket))
+}
+
+export const verifyToken = async (req: Request, res: Response) => {
     const jwtHandler = new JWTHandler()
-    res.json(jwtHandler.generateJwtToken(user))
+    res.json(await jwtHandler.verifyJwtToken(req.params.token))
 }

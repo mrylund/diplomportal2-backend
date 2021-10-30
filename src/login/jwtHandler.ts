@@ -7,12 +7,11 @@ export class JWTHandler {
     private key: string = 'hej';
     private TOKEN_EXPIRY: number = 2 * 60 * 60 // 2 hours in sec
 
-    generateJwtToken(user: User) {
+    generateJwtToken(studynumber: string) {
         const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + this.TOKEN_EXPIRY,
             data: "goddag"
-        }, this.key, { algorithm: 'HS512', subject: user.email} )
-        console.log(token)
+        }, this.key, { algorithm: 'HS512', subject: studynumber} )
 
         return token
     }

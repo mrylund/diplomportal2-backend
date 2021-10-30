@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { generateJwtToken, getCourseById, getCourses, getStudentById, getStudents } from './routes'
+import { getCourseById, getCourses, getStudentById, getStudents, logIn } from './routes'
 import * as cors from 'cors'
 import { prisma } from './main'
 
@@ -31,7 +31,7 @@ export default class WebServer {
 
         this.app.get('/students/:id', getStudentById)
 
-        this.app.get('/token', generateJwtToken)
+        this.app.get('/login', logIn)
 
         // Basic error handling
         this.app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
