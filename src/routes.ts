@@ -50,12 +50,23 @@ export const getStudentById = async (req: Request, res: Response) => {
 //     res.redirect('https://auth.dtu.dk/dtu/?service=http://localhost:443/verifyticket')
 // }
 
+// export const logIn = async (req: Request, res: Response) => {
+//     res.redirect('https://auth.dtu.dk/dtu/?service=http://localhost:443/getuser')
+// }
 
-export const verifyTicket = async (req: Request, res: Response) => {
-    const jwtHandler = new JWTHandler()
+export const test = async (req: Request, res: Response) => {
     const ticket = req.query.ticket
-    const token = jwtHandler.generateJwtToken(ticket as string)
-    const isValid = jwtHandler.verifyJwtToken(req.params.token)
-    res.set('Authorization', 'Bearer ' + token)
-    res.json(res.redirect('http://localhost:3000/'))
+    console.log(ticket)
+    res.redirect('http://localhost:3000/')
 }
+
+
+export const logIn = async (req: Request, res: Response) => {
+    console.log("start login backend")
+    const logIn = new LogIn()
+    const ticket = req.query.ticket
+    const token = (await logIn.getUser(ticket))
+    // Append the token in the URL
+    res.redirect('http://localhost:3000/?token=' + token)
+}
+

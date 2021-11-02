@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { getCourseById, getCourses, getStudentById, getStudents, verifyTicket } from './routes'
+import { getCourseById, getCourses, getStudentById, getStudents, logIn } from './routes'
 import * as cors from 'cors'
 import { prisma } from './main'
 
@@ -17,7 +17,7 @@ export default class WebServer {
 
     constructor() {
         this.app = express()
-        this.app.use(cors(corsOptions))
+        this.app.use(cors())
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.get('/', (req, res) => {
@@ -31,9 +31,7 @@ export default class WebServer {
 
         this.app.get('/students/:id', getStudentById)
 
-        //this.app.get('/login', logIn)
-
-        this.app.get('/verifyticket', verifyTicket)
+        this.app.get('/login', logIn)
 
         // Basic error handling
         this.app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
