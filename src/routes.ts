@@ -42,12 +42,20 @@ export const getStudentById = async (req: Request, res: Response) => {
 }
 
 
-export const logIn = async (req: Request, res: Response) => {
-    const logIn = new LogIn()
-    res.json(await logIn.dtuLogin(req.query.ticket))
-}
+// This should be used but does not work GG (now we hardcoded the /verifyticket url :)
+// export const logIn = async (req: Request, res: Response) => {
+//     console.log('jeg logger ind i backend')
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     res.redirect('https://auth.dtu.dk/dtu/?service=http://localhost:443/verifyticket')
+// }
 
-export const verifyToken = async (req: Request, res: Response) => {
+
+export const verifyTicket = async (req: Request, res: Response) => {
     const jwtHandler = new JWTHandler()
-    res.json(await jwtHandler.verifyJwtToken(req.params.token))
+    const ticket = req.query.ticket
+    const token = jwtHandler.generateJwtToken(ticket as string)
+    const isValid = jwtHandler.verifyJwtToken(req.params.token)
+    res.set('Authorization', 'Bearer ' + token)
+    res.json(res.redirect('http://localhost:3000/'))
 }
