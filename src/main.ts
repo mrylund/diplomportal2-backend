@@ -2,7 +2,7 @@ import WebServer from "./webserver"
 import { PrismaClient } from '@prisma/client'
 
 const webServer = new WebServer()
-const PORT = Number(process.env.PORT) || 443;
+const PORT = Number(process.env.PORT) || 80;
 export const prisma = new PrismaClient();
 
 (async () => {
