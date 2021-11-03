@@ -1,7 +1,7 @@
 import * as express from 'express'
-import { getCourseById, getCourses, getStudentById, getStudents } from './routes'
+import { getCourseById, getCourses, getStudentById, getStudents, logIn } from './routes'
 import * as cors from 'cors'
-import { access } from 'fs'
+import { prisma } from './main'
 
 const corsOptions = {
     origin: true,
@@ -17,7 +17,7 @@ export default class WebServer {
 
     constructor() {
         this.app = express()
-        this.app.use(cors(corsOptions))
+        this.app.use(cors())
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.get('/', (req, res) => {
@@ -30,6 +30,8 @@ export default class WebServer {
         this.app.get('/students', getStudents)
 
         this.app.get('/students/:id', getStudentById)
+
+        this.app.get('/login', logIn)
 
         // Basic error handling
         this.app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -56,6 +58,7 @@ export default class WebServer {
     }
 
     stop(): Promise<void> {
+        prisma.$disconnect()
         return this.closer()
     }
 }
