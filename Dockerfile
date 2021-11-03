@@ -1,6 +1,5 @@
 # Step 1
 FROM node:16-alpine as build-step
-ENV DATABASE_URL postgresql://0.0.0.0:5432
 RUN mkdir /app
 WORKDIR /app
 
