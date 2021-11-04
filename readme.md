@@ -1,7 +1,9 @@
-Don't forget to npm install in /api and/or /client if new packages have been used since last pull.
+# Setup
+1. Download the repository to your local machine
+1. Rename `.env.example` to `.env`
+1. Fill out missing info in `.env`
 
-API: 
-- `npm run nodemon` to start the server. Use localhost:8000/_endpoint_ to fetch data.
-
-Client:
-- `npm run start` to start the client. Use localhost:3000.
+# Build and run the docker image
+1. Run `docker build -t {PROJECT-NAME} .` to create a docker image
+1. Run `docker run -d -p 80:80 --env-file .env {PROJECT-NAME}`
+1. You should now have a docker container running on port 80
