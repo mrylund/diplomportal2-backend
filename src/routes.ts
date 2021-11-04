@@ -57,7 +57,7 @@ export const getStudentById = async (req: Request, res: Response) => {
 export const test = async (req: Request, res: Response) => {
     const ticket = req.query.ticket
     console.log(ticket)
-    res.redirect('http://localhost:3000/')
+    res.redirect(process.env.FRONTEND_URL)
 }
 
 
@@ -67,6 +67,6 @@ export const logIn = async (req: Request, res: Response) => {
     const ticket = req.query.ticket
     const token = (await logIn.getUser(ticket))
     // Append the token in the URL
-    res.redirect('http://localhost:3000/?token=' + token)
+    res.redirect(process.env.FRONTEND_URL + '?token=' + token)
 }
 
