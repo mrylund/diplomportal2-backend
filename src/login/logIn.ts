@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios'
 import { JWTHandler } from './jwtHandler'
 
 const backend_url = Number(process.env.BACKEND_URL) || "http://localhost:80/";
+console.log("env backend url:", process.env.BACKEND_URL)
+console.log("backend url in use:", backend_url)
 
 export class LogIn {
 
