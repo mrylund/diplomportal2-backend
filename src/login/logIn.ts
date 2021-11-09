@@ -14,8 +14,8 @@ export class LogIn {
         console.log("getUser: ticket=", ticket)
         const validationUrl = 'https://auth.dtu.dk/dtu/validate?service=' + backend_url + 'login&ticket=' + ticket
         console.log("validate url:", validationUrl)
-        const response = await axios.get(validationUrl)
-        return this.verifyUser(response)
+        // const response = await axios.get(validationUrl)
+        // return this.verifyUser(response)
     }
 
     verifyUser = async (response: AxiosResponse) => {
