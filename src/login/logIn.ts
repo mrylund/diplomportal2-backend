@@ -7,20 +7,26 @@ console.log("backend url in use:", backend_url)
 
 export class LogIn {
 
-    dtuGetToken = async () => {
-
-        const response = await axios.get('https://auth.dtu.dk/dtu/?service=' + backend_url + 'login')
-    }
-
+    /**
+     * Verify a users ticket.
+     * @param ticket The ticket dtu gives back as the login was called via frontend.
+     * @returns The token if the users ticket is verified. "Not a valid user." if not.
+     */
     getUser = async (ticket: any) => {
         console.log("getUser: ticket=", ticket)
         const validationUrl = 'https://auth.dtu.dk/dtu/validate?service=' + backend_url + 'login&ticket=' + ticket
         console.log("validate url:", validationUrl)
         const response = await axios.get(validationUrl)
-        return this.verifyUser(response)
+        return this.createToken(response)
     }
 
-    verifyUser = async (response: AxiosResponse) => {
+
+    /**
+     * Creates a JWT token used to return to the frontend.
+     * @param response The response auth.dtu gives back. Either "yes <studie number>" or "no".
+     * @returns A JWT token generated with the users studynumber.
+     */
+    createToken = async (response: AxiosResponse) => {
         console.log("verifyUser", response.data as string);
         
         // If the user is valid
@@ -30,7 +36,6 @@ export class LogIn {
             const token = jwtHandler.generateJwtToken(studynumber)
             return token
         } else {
-            // dræb
             return 'Not a valid user.'
         }
     }
