@@ -28,9 +28,7 @@ export class LogIn {
             return token
         } else {
             // dræb
-            return {
-                message: 'Not a valid user.'
-            }
+            return 'Not a valid user.'
         }
     }
 
