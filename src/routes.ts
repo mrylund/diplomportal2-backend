@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import * as dummy from "./dummy"
 import { User } from './login/user'
 import { JWTHandler } from './login/jwtHandler'
 import { prisma } from './main'

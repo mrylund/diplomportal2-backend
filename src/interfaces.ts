@@ -5,6 +5,7 @@ export type Course = {
     title: string;
     // participants: Student[];
     weekDay: string;
+    sheetsId: string;
 }
 
 export type Student = {
