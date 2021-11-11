@@ -18,5 +18,5 @@ model courses {
 model students {
   id          Int     @id(map: "students_pk") @default(autoincrement())
   name        String? @db.VarChar
-  studynumber String  @db.VarChar
+  studynumber String  @unique
 }

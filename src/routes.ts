@@ -38,7 +38,6 @@ export const createCourse = async (req: Request, res: Response) => {
         message: `Could not create course.`
     })
 }
-// 1SxaB7WiuMFWqgWu3OuKJPc2hZ9_7tzLH58we0bhvDoo
 
 export const getStudents = async (req: Request, res: Response) => {
     const students = await prisma.students.findMany()
@@ -58,6 +57,19 @@ export const getStudentById = async (req: Request, res: Response) => {
     })
 }
 
+export const createStudent = async (req: Request, res: Response) => {
+    const student = await prisma.students.create({
+        data: {
+            name: req.body.name,
+            studynumber: req.body.studyNumber
+        }
+    });
+    student
+    ? res.json(student)
+    : res.status(400).send({
+        message: `Could not create student.`
+    })
+}
 
 // This should be used but does not work GG (now we hardcoded the /verifyticket url :)
 // export const logIn = async (req: Request, res: Response) => {
