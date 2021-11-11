@@ -22,6 +22,24 @@ export const getCourseById = async (req: Request, res: Response) => {
     })
 }
 
+
+export const createCourse = async (req: Request, res: Response) => {
+    const course = await prisma.courses.create({
+        data: {
+            coursenumber: req.body.courseNumber,
+            title: req.body.title,
+            weekday: req.body.weekDay,
+            sheets: req.body.sheets
+        }
+    });
+    course
+    ? res.json(course)
+    : res.status(400).send({
+        message: `Could not create course.`
+    })
+}
+// 1SxaB7WiuMFWqgWu3OuKJPc2hZ9_7tzLH58we0bhvDoo
+
 export const getStudents = async (req: Request, res: Response) => {
     const students = await prisma.students.findMany()
     students

@@ -12,7 +12,7 @@ model courses {
   coursenumber String  @db.VarChar
   title        String? @db.VarChar
   weekday      String? @db.VarChar
-  sheetsId     String? @db.VarChar
+  sheets       String? @db.VarChar
 }
 
 model students {

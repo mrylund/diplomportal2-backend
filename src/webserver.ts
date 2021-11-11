@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { getCourseById, getCourses, getStudentById, getStudents, logIn } from './routes'
+import { getCourseById, getCourses, getStudentById, getStudents, logIn, createCourse } from './routes'
 import * as cors from 'cors'
 import { prisma } from './main'
 
@@ -24,6 +24,7 @@ export default class WebServer {
             res.send('hej')
         })
         this.app.get('/courses', getCourses)
+        this.app.post('/courses', createCourse)
 
         this.app.get('/courses/:id', getCourseById)
 
