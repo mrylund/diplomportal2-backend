@@ -71,6 +71,22 @@ export const createStudent = async (req: Request, res: Response) => {
     })
 }
 
+export const elevateUser = async (req: Request, res: Response) => {
+    const user = await prisma.students.update({
+        where: {
+            studynumber: req.params.id
+        }, 
+        data: {
+            isAdmin: true
+        }
+    })
+    user
+    ? res.json(user)
+    : res.status(400).send({
+        message: `Could not elevate user with id ${req.params.id}.`
+    })
+}
+
 // This should be used but does not work GG (now we hardcoded the /verifyticket url :)
 // export const logIn = async (req: Request, res: Response) => {
 //     console.log('jeg logger ind i backend')
