@@ -32,9 +32,21 @@ export const buildSchedule = (student: Student) => {
         }
     } as { [key: string]: { [key: string]: string } };
 
-    student.courses.forEach((course, index) => {
+    student.courses.forEach((course) => {
         schedule[weekDict[course.weekday.substring(0, 2)]][timeDict[course.weekday[course.weekday.length-1]]] = course.title;
     })
 
-    return schedule
+    let cleanSchedule: any = [];
+
+    Object.keys(schedule).forEach((day) => {
+        for (let time in schedule[day]) {
+            if (schedule[day][time]) {
+                const key = day
+                cleanSchedule.push({[key]: schedule[day]})
+                break
+            }
+        }
+    })
+
+    return cleanSchedule
 }
