@@ -9,7 +9,17 @@ import { Course, Student } from "./interfaces"
 /**
  * For all endpoints use jwtHandler.authorizeUser(req) with the request object from the function.
  * This is to verify that the user is who he/she said he/she is.
+ * Should be called like:
  */
+/*
+    if (jwtHandler.authorizeUser(req)) {
+        do stuff
+    } else {
+        res.status(403).send({
+            message: notAuthorizedErrorMessage
+       })
+    }
+*/
 const jwtHandler = new JWTHandler()
 const notAuthorizedErrorMessage = 'Access denied. Token is invalid.'
 
@@ -97,8 +107,6 @@ export const getCurrentUser = async (req: Request, res: Response) => {
             message: notAuthorizedErrorMessage
         })
     }
-    
-    
 }
 
 export const createStudent = async (req: Request, res: Response) => {
@@ -116,19 +124,27 @@ export const createStudent = async (req: Request, res: Response) => {
 }
 
 export const updateStudentName = async (req: Request, res: Response) => {
-    const student = await prisma.students.update({
-        where: {
-            studynumber: req.params.id
-        },
-        data: {
-            name: req.body.name
-        }
-    });
-    student
-    ? res.json(student)
-    : res.status(400).send({
-        message: `Could not update the student with id ${req.params.id}.`
-    })
+    if (jwtHandler.authorizeUser(req)) {
+        const currentUserStudyNumber = jwtHandler.getStudynumberFromRequest(req)
+        const student = await prisma.students.update({
+            where: {
+                studynumber: currentUserStudyNumber
+            },
+            data: {
+                name: req.body.name
+            }
+        });
+        student
+        ? res.json(student)
+        : res.status(400).send({
+            message: `Could not update the student with id ${currentUserStudyNumber}.`
+        })
+    } else {
+        res.status(403).send({
+            message: notAuthorizedErrorMessage
+        })
+    }
+    
 }
 
 export const elevateUser = async (req: Request, res: Response) => {
