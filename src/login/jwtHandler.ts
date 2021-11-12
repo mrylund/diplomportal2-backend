@@ -39,6 +39,11 @@ export class JWTHandler {
         }
     }
 
+    getStudynumberFromRequest(req: Request) {
+        const token = this.getTokenFromRequest(req)
+        return this.getStudynumberFromToken(token)
+    }
+
     getTokenFromRequest(req: Request) {
         const bearerHeader = req.body.authorization
         return bearerHeader || ''
