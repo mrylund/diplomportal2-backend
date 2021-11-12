@@ -55,7 +55,7 @@ export const createCourse = async (req: Request, res: Response) => {
 }
 
 export const getStudents = async (req: Request, res: Response) => {
-    const students = await prisma.students.findMany()
+    const students = await prisma.students.findMany({ include: { courses: true } })
     students
     ? res.json(students)
     : res.status(400).send({
@@ -64,7 +64,7 @@ export const getStudents = async (req: Request, res: Response) => {
 }
 
 export const getStudentById = async (req: Request, res: Response) => {
-    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id } })
+    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id }, include: { courses: true} })
     student
     ? res.json(student)
     : res.status(400).send({
