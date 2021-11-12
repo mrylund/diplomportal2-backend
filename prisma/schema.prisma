@@ -8,16 +8,18 @@ datasource db {
 }
 
 model courses {
-  id           Int     @id(map: "courses_pk") @default(autoincrement())
-  coursenumber String  @db.VarChar
-  title        String? @db.VarChar
-  weekday      String? @db.VarChar
-  sheets       String? @db.VarChar
+  id           Int        @id(map: "courses_pk") @default(autoincrement())
+  coursenumber String     @db.VarChar
+  title        String?    @db.VarChar
+  weekday      String?    @db.VarChar
+  sheets       String?    @db.VarChar
+  students     students[]
 }
 
 model students {
-  id          Int     @id(map: "students_pk") @default(autoincrement())
-  name        String? @db.VarChar
-  studynumber String  @unique
-  isAdmin     Boolean @default(false)
+  id          Int       @id(map: "students_pk") @default(autoincrement())
+  name        String?   @db.VarChar
+  studynumber String    @unique
+  isAdmin     Boolean   @default(false)
+  courses     courses[]
 }
