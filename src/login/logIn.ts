@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { getStudentById } from '../routes';
 import { JWTHandler } from './jwtHandler'
 
-const backend_url = process.env.NODE_ENV === 'production' ?  "https://" + process.env.BACKEND_URL : "http://localhost:80/";
+const backend_url = process.env.NODE_ENV === 'development' ? "http://localhost:80/" : "https://" + process.env.BACKEND_URL;
 console.log("env backend url:", process.env.BACKEND_URL)
 console.log("backend url in use:", backend_url)
 
