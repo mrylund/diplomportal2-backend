@@ -4,6 +4,20 @@ import { JWTHandler } from './login/jwtHandler'
 import { prisma } from './main'
 import { LogIn } from "./login/logIn"
 
+export const authenticateUserToken = async (req: Request, res: Response) => {
+    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id } })
+    const bearerHeader = req.body.headers['Authorization']
+    if (bearerHeader) {
+        const token = bearerHeader.split(' ')[1]
+        console.log('token', token)
+        const jwtHandler = new JWTHandler()
+        const isUserAuthenticated = jwtHandler.verifyToken(token)
+        isUserAuthenticated
+        ? res.sendStatus(200)
+        : res.sendStatus(403)
+    }
+}
+
 export const getCourses = async (req: Request, res: Response) => {
     const courses = await prisma.courses.findMany()
     courses
@@ -68,6 +82,22 @@ export const createStudent = async (req: Request, res: Response) => {
     ? res.json(student)
     : res.status(400).send({
         message: `Could not create student.`
+    })
+}
+
+export const updateStudentName = async (req: Request, res: Response) => {
+    const student = await prisma.students.update({
+        where: {
+            studynumber: req.params.id
+        },
+        data: {
+            name: req.body.name
+        }
+    });
+    student
+    ? res.json(student)
+    : res.status(400).send({
+        message: `Could not update the student with id ${req.params.id}.`
     })
 }
 

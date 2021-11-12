@@ -16,6 +16,11 @@ export class JWTHandler {
         return token
     }
 
+    // Returns true if the token can be decoded
+    verifyToken(token: any) {
+        return !!this.getStudynumberFromToken(token)
+    }
+
     getStudynumberFromToken(token: any) {
         try {
             const decoded = jwt.verify(token, this.key)
@@ -23,11 +28,6 @@ export class JWTHandler {
         } catch (e) {
             return undefined
         }
-    }
-
-    // Returns true if the token can be decoded
-    verifyToken(token: any) {
-        return !!this.getStudynumberFromToken(token)
     }
 
 }
