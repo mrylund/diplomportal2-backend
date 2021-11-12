@@ -3,6 +3,8 @@ import { User } from './login/user'
 import { JWTHandler } from './login/jwtHandler'
 import { prisma } from './main'
 import { LogIn } from "./login/logIn"
+import { buildSchedule } from "./schedule"
+import { Course, Student } from "./interfaces"
 
 /**
  * For all endpoints use jwtHandler.authorizeUser(req) with the request object from the function.
@@ -65,8 +67,16 @@ export const getStudents = async (req: Request, res: Response) => {
 
 export const getStudentById = async (req: Request, res: Response) => {
     const student = await prisma.students.findFirst({ where: { studynumber: req.params.id }, include: { courses: true} })
+    const hej: Student = {
+        name: student.name,
+        studyNumber: student.studynumber,
+        courses: student.courses as unknown as Course[],
+        schedule: {}
+    }
+    const schedule = buildSchedule(hej)
+
     student
-    ? res.json(student)
+    ? res.json({...student, schedule})
     : res.status(400).send({
         message: `Could not fetch student with studyNumber ${req.params.id}.`
     })

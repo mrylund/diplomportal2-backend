@@ -4,7 +4,7 @@ export type Course = {
     courseNumber: string;
     title: string;
     participants: Student[];
-    weekDay: string;
+    weekday: string;
     sheetsId: string;
 }
 
@@ -12,27 +12,20 @@ export type Student = {
     studyNumber: string;
     name: string;
     courses: Course[];
-    schedule: Schedule
+    schedule: any;
 }
 
 
-export type Schedule = {
-    courses: Course[];
-}
+export const weekDict = {
+    'mo': 'monday',
+    'ti': 'tuesday',
+    'on': 'wednesday',
+    'to': 'thursday',
+    'fr': 'friday'
+} as { [key: string]: string }
 
-export type weekDict = {
-    'mo': 'Mandag',
-    'ti': 'Tirsdag',
-    'on': 'Onsdag',
-    'to': 'Torsdag',
-    'fr': 'Fredag'
-}
-
-export type timeDict = {
-    // '0': {'start': '08:00', 'end': '12:00'},
-    // '1': {'start': '13:00', 'end': '17:00'},
-    // '2': {'start': '18:00', 'end': '22:00'}
+export const timeDict = {
     '0': '08:00-12:00',
     '1': '13:00-17:00',
     '2': '18:00-22:00',
-}
+} as { [key: string]: string }
