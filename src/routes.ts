@@ -75,9 +75,7 @@ export const getStudentById = async (req: Request, res: Response) => {
 export const getCurrentUser = async (req: Request, res: Response) => {
     if (jwtHandler.authorizeUser(req)) {
         const token = jwtHandler.getTokenFromRequest(req)
-        console.log("min token", token)
         const studyNumber = jwtHandler.getStudynumberFromToken(token)
-        console.log("mit nummer", studyNumber)
         const curUser = await prisma.students.findFirst({ where: { studynumber: studyNumber } })
         curUser
         ? res.json(curUser)
