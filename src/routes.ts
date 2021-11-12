@@ -4,18 +4,19 @@ import { JWTHandler } from './login/jwtHandler'
 import { prisma } from './main'
 import { LogIn } from "./login/logIn"
 
+/**
+ * For all endpoints use jwtHandler.authorizeUser(req) with the request object from the function.
+ * This is to verify that the user is who he/she said he/she is.
+ */
+const jwtHandler = new JWTHandler()
+const notAuthorizedErrorMessage = 'Access denied. Token is invalid.'
+
 export const authenticateUserToken = async (req: Request, res: Response) => {
-    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id } })
-    const bearerHeader = req.body.headers['Authorization']
-    if (bearerHeader) {
-        const token = bearerHeader.split(' ')[1]
-        console.log('token', token)
-        const jwtHandler = new JWTHandler()
-        const isUserAuthenticated = jwtHandler.verifyToken(token)
-        isUserAuthenticated
-        ? res.sendStatus(200)
-        : res.sendStatus(403)
-    }
+    jwtHandler.authorizeUser(req)
+    ? res.sendStatus(200)
+    : res.status(403).send({
+        message: notAuthorizedErrorMessage
+    })
 }
 
 export const getCourses = async (req: Request, res: Response) => {
@@ -69,6 +70,27 @@ export const getStudentById = async (req: Request, res: Response) => {
     : res.status(400).send({
         message: `Could not fetch student with studyNumber ${req.params.id}.`
     })
+}
+
+export const getCurrentUser = async (req: Request, res: Response) => {
+    if (jwtHandler.authorizeUser(req)) {
+        const token = jwtHandler.getTokenFromRequest(req)
+        console.log("min token", token)
+        const studyNumber = jwtHandler.getStudynumberFromToken(token)
+        console.log("mit nummer", studyNumber)
+        const curUser = await prisma.students.findFirst({ where: { studynumber: studyNumber } })
+        curUser
+        ? res.json(curUser)
+        : res.status(400).send({
+            message: 'Could not fetch current user.'
+        })
+    } else {
+        res.status(403).send({
+            message: notAuthorizedErrorMessage
+        })
+    }
+    
+    
 }
 
 export const createStudent = async (req: Request, res: Response) => {
@@ -131,13 +153,11 @@ export const elevateUser = async (req: Request, res: Response) => {
 
 export const test = async (req: Request, res: Response) => {
     const ticket = req.query.ticket
-    console.log(ticket)
     res.redirect(process.env.FRONTEND_URL)
 }
 
 
 export const logIn = async (req: Request, res: Response) => {
-    console.log("start login backend")
     const logIn = new LogIn()
     const ticket = req.query.ticket
     const token = (await logIn.getUser(ticket))

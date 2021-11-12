@@ -8,7 +8,8 @@ import {
     createCourse,
     createStudent,
     elevateUser,
-    authenticateUserToken
+    authenticateUserToken,
+    getCurrentUser,
 } from './routes'
 import * as cors from 'cors'
 import { prisma } from './main'
@@ -33,15 +34,20 @@ export default class WebServer {
         this.app.get('/', (req, res) => {
             res.send('hej')
         })
+        // Course
         this.app.get('/courses', getCourses)
         this.app.get('/courses/:id', getCourseById)
         this.app.post('/courses', createCourse)
 
+        // User
         this.app.get('/students', getStudents)
         this.app.get('/students/:id', getStudentById)
         this.app.post('/students', createStudent)
+        this.app.post('/student/current', getCurrentUser)
+        
+        // Auth
+        this.app.post('/student/authenticate', authenticateUserToken)
         this.app.put('/elevate/:id', elevateUser)
-        this.app.post('/authenticateuser', authenticateUserToken)
         this.app.get('/login', logIn)
 
         // Basic error handling

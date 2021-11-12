@@ -1,5 +1,6 @@
 import { User } from './user'
 import * as jwt from "jsonwebtoken"
+import { Request } from "express"
 
 
 export class JWTHandler {
@@ -16,6 +17,13 @@ export class JWTHandler {
         return token
     }
 
+    authorizeUser(req: Request) {
+        const token = req.body.authorization
+        return token
+        ? this.verifyToken(token)
+        : false
+    }
+
     // Returns true if the token can be decoded
     verifyToken(token: any) {
         return !!this.getStudynumberFromToken(token)
@@ -24,10 +32,16 @@ export class JWTHandler {
     getStudynumberFromToken(token: any) {
         try {
             const decoded = jwt.verify(token, this.key)
-            return decoded.sub
+            console.log("min sub", decoded.sub as string)
+            return decoded.sub as string
         } catch (e) {
-            return undefined
+            return ''
         }
+    }
+
+    getTokenFromRequest(req: Request) {
+        const bearerHeader = req.body.authorization
+        return bearerHeader || ''
     }
 
 }
