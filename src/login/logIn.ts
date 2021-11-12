@@ -1,4 +1,6 @@
+import { prisma } from '../main'
 import axios, { AxiosResponse } from 'axios'
+import { getStudentById } from '../routes';
 import { JWTHandler } from './jwtHandler'
 
 const backend_url = process.env.NODE_ENV === 'production' ? "https://" + process.env.BACKEND_URL : "http://localhost:80/";
@@ -32,6 +34,7 @@ export class LogIn {
         // If the user is valid
         if ((response.data as string).includes('yes')) {
             const studynumber = (response.data as string).split('\n')[1].trim()
+            this.createUserIfNotExist(studynumber)
             const jwtHandler = new JWTHandler()
             const token = jwtHandler.generateJwtToken(studynumber)
             return token
@@ -39,5 +42,19 @@ export class LogIn {
             return 'Not a valid user.'
         }
     }
+
+    createUserIfNotExist = async (studyNumber: string) => {
+        const student = await prisma.students.findFirst({ where: { studynumber: studyNumber }})
+        if (!student) {
+            const newStudent = await prisma.students.create({
+                data: {
+                    name: '',
+                    studynumber: studyNumber
+                }
+            });
+            console.log("New student created:", newStudent)
+        }
+    }
+
 
 }
