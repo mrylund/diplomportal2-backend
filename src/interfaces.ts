@@ -3,8 +3,8 @@
 export type Course = {
     courseNumber: string;
     title: string;
-    participants: Student[];
-    weekDay: string;
+    //participants: Student[];
+    weekDay?: string;
     timeSlot: string;
     sheetsId: string;
 }
