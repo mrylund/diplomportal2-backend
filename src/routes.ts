@@ -41,7 +41,7 @@ export const getCourses = async (req: Request, res: Response) => {
 }
 
 export const getCourseById = async (req: Request, res: Response) => {
-    const course = await prisma.courses.findFirst({ where: { coursenumber: req.params.id } })
+    const course = await prisma.courses.findFirst({ where: { courseNumber: req.params.id } })
     course
     ? res.json(course)
     : res.status(400).send({
@@ -53,10 +53,10 @@ export const getCourseById = async (req: Request, res: Response) => {
 export const createCourse = async (req: Request, res: Response) => {
     const course = await prisma.courses.create({
         data: {
-            coursenumber: req.body.courseNumber,
+            courseNumber: req.body.courseNumber,
             title: req.body.title,
-            weekday: req.body.weekDay,
-            sheets: req.body.sheets
+            weekDay: req.body.weekDay,
+            sheetsId: req.body.sheetsId
         }
     });
     course
@@ -76,10 +76,10 @@ export const getStudents = async (req: Request, res: Response) => {
 }
 
 export const getStudentById = async (req: Request, res: Response) => {
-    const student = await prisma.students.findFirst({ where: { studynumber: req.params.id }, include: { courses: true} })
+    const student = await prisma.students.findFirst({ where: { studyNumber: req.params.id }, include: { courses: true} })
     const hej: Student = {
         name: student.name,
-        studyNumber: student.studynumber,
+        studyNumber: student.studyNumber,
         courses: student.courses as unknown as Course[],
         schedule: {}
     }
@@ -96,7 +96,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     if (jwtHandler.authorizeUser(req)) {
         const token = jwtHandler.getTokenFromRequest(req)
         const studyNumber = jwtHandler.getStudynumberFromToken(token)
-        const curUser = await prisma.students.findFirst({ where: { studynumber: studyNumber } })
+        const curUser = await prisma.students.findFirst({ where: { studyNumber: studyNumber } })
         curUser
         ? res.json(curUser)
         : res.status(400).send({
@@ -113,7 +113,7 @@ export const createStudent = async (req: Request, res: Response) => {
     const student = await prisma.students.create({
         data: {
             name: req.body.name,
-            studynumber: req.body.studyNumber
+            studyNumber: req.body.studyNumber
         }
     });
     student
@@ -128,7 +128,7 @@ export const updateStudentName = async (req: Request, res: Response) => {
         const currentUserStudyNumber = jwtHandler.getStudynumberFromRequest(req)
         const student = await prisma.students.update({
             where: {
-                studynumber: currentUserStudyNumber
+                studyNumber: currentUserStudyNumber
             },
             data: {
                 name: req.body.name
@@ -150,7 +150,7 @@ export const updateStudentName = async (req: Request, res: Response) => {
 export const elevateUser = async (req: Request, res: Response) => {
     const user = await prisma.students.update({
         where: {
-            studynumber: req.params.id
+            studyNumber: req.params.id
         }, 
         data: {
             isAdmin: true
@@ -175,10 +175,6 @@ export const elevateUser = async (req: Request, res: Response) => {
 //     res.redirect('https://auth.dtu.dk/dtu/?service=http://localhost:443/getuser')
 // }
 
-export const test = async (req: Request, res: Response) => {
-    const ticket = req.query.ticket
-    res.redirect(process.env.FRONTEND_URL)
-}
 
 
 export const logIn = async (req: Request, res: Response) => {
