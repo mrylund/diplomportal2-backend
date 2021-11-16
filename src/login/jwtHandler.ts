@@ -32,11 +32,15 @@ export class JWTHandler {
     getStudynumberFromToken(token: any) {
         try {
             const decoded = jwt.verify(token, this.key)
-            console.log("min sub", decoded.sub as string)
             return decoded.sub as string
         } catch (e) {
             return ''
         }
+    }
+
+    getStudynumberFromRequest(req: Request) {
+        const token = this.getTokenFromRequest(req)
+        return this.getStudynumberFromToken(token)
     }
 
     getTokenFromRequest(req: Request) {

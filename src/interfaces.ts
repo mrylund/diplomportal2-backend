@@ -4,7 +4,8 @@ export type Course = {
     courseNumber: string;
     title: string;
     participants: Student[];
-    weekday: string;
+    weekDay: string;
+    timeSlot: string;
     sheetsId: string;
 }
 
