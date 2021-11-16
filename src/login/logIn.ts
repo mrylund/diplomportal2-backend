@@ -39,12 +39,12 @@ export class LogIn {
     }
 
     createUserIfNotExist = async (studyNumber: string) => {
-        const student = await prisma.students.findFirst({ where: { studynumber: studyNumber }})
+        const student = await prisma.students.findFirst({ where: { studyNumber: studyNumber }})
         if (!student) {
             const newStudent = await prisma.students.create({
                 data: {
                     name: '',
-                    studynumber: studyNumber
+                    studyNumber: studyNumber
                 }
             });
         }
