@@ -96,9 +96,16 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     if (jwtHandler.authorizeUser(req)) {
         const token = jwtHandler.getTokenFromRequest(req)
         const studyNumber = jwtHandler.getStudynumberFromToken(token)
-        const curUser = await prisma.students.findFirst({ where: { studyNumber: studyNumber } })
+        const curUser = await prisma.students.findFirst({ where: { studyNumber: studyNumber }, include: { courses: true } })
+        const curStudent: Student = {
+            name: curUser.name,
+            studyNumber: curUser.studyNumber,
+            courses: curUser.courses as unknown as Course[],
+            schedule: {}
+        }
+        const schedule = buildSchedule(curStudent)
         curUser
-        ? res.json(curUser)
+        ? res.json({...curUser, schedule})
         : res.status(400).send({
             message: 'Could not fetch current user.'
         })
