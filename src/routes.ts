@@ -154,6 +154,38 @@ export const updateStudentName = async (req: Request, res: Response) => {
     
 }
 
+export const addStudentToCourse = async (req: Request, res: Response) => {
+    if (!jwtHandler.authorizeUser(req)) {
+        const currentUserStudyNumber = jwtHandler.getStudynumberFromRequest(req)
+        const student = await prisma.students.findFirst({ where: { studyNumber: currentUserStudyNumber }, include: { courses: true } })
+        const course = await prisma.courses.findFirst({ where: { courseNumber: req.body.id } })
+        if (student && course) {
+            student.courses.push(course)
+            await prisma.students.update({
+                where: {
+                    studyNumber: currentUserStudyNumber
+                },
+                data: {
+                    courses: {
+                        connect: {id: course.id}
+                    }
+                }
+            })
+            res.json({
+                message: 'Student added to course.'
+            })
+        } else {
+            res.status(400).send({
+                message: `Could not add student to course.`
+            })
+        }
+    } else {
+        res.status(403).send({
+            message: notAuthorizedErrorMessage
+        })
+    }
+}
+
 export const elevateUser = async (req: Request, res: Response) => {
     const user = await prisma.students.update({
         where: {
