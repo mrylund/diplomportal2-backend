@@ -11,6 +11,7 @@ import {
     authenticateUserToken,
     getCurrentUser,
     updateStudentName,
+    addStudentToCourse
 } from './routes'
 import * as cors from 'cors'
 import { prisma } from './main'
@@ -45,6 +46,7 @@ export default class WebServer {
         this.app.get('/students/:id', getStudentById)
         this.app.post('/students', createStudent)
         this.app.post('/student/current', getCurrentUser)
+        this.app.put('/students/current/courses', addStudentToCourse)
         this.app.put('/students/current/name', updateStudentName)
         
         // Auth
