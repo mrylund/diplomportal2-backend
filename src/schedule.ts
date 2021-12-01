@@ -8,6 +8,7 @@ export const buildSchedule = (student: Student) => {
     const usedDays = new Set()
     let schedule: {weekdayName: string, courses: Course[]}[] = []
     let sameDay: any[]
+    const _ = require("lodash");
 
     studentCourses.forEach(course => {
         let courses: Course[] = []
@@ -21,10 +22,12 @@ export const buildSchedule = (student: Student) => {
             const timeSlot = course.timeSlot
             const title = course.title
             const courseNumber = course.courseNumber
+            const startTime = course.startTime
+            const endTime = course.endTime
             const sheetsId = course.sheetsId
             // Add the day
             usedDays.add(weekdayName)
-            courses.push({timeSlot, title, courseNumber, sheetsId})
+            courses.push({timeSlot, startTime, endTime, title, courseNumber, sheetsId})
         })
         
         const daySchedule = { weekdayName, courses }
