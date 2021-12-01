@@ -14,6 +14,8 @@ model courses {
   weekDay      String?    @db.VarChar
   sheetsId     String?    @db.VarChar
   timeSlot     String?    @db.VarChar
+  startTime    String?    @db.VarChar
+  endTime      String?    @db.VarChar
   students     students[]
 }
 
