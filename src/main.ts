@@ -5,12 +5,13 @@ const webServer = new WebServer()
 const PORT = Number(process.env.PORT) || 80;
 export const prisma = new PrismaClient();
 
-(async () => {
-        console.log('Initializing');
-        await webServer.start(PORT);
-        console.log('Started web server on port ' + PORT);
-})();
-
+if (process.env.NODE_ENV !== 'test') {
+    (async () => {
+            console.log('Initializing');
+            await webServer.start(PORT);
+            console.log('Started web server on port ' + PORT);
+    })();
+    }
 // Serveren dør hvis exceptions ikke håndteres
 process.on('uncaughtException', err => {
     console.error("Exit processing due to uncaught exception", err);
