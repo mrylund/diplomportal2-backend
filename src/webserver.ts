@@ -34,7 +34,7 @@ export default class WebServer {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.get('/', (req, res) => {
-            res.send('hej')
+            res.json({message: 'Diplompotal 2.0 backend'})
         })
         // Course
         this.app.get('/courses', getCourses)
@@ -45,14 +45,15 @@ export default class WebServer {
         this.app.get('/students', getStudents)
         this.app.get('/students/:id', getStudentById)
         this.app.post('/students', createStudent)
-        this.app.post('/student/current', getCurrentUser)
+        this.app.post('/students/current', getCurrentUser)
         this.app.put('/students/current/courses', addStudentToCourse)
         this.app.put('/students/current/name', updateStudentName)
         
         // Auth
-        this.app.post('/student/authenticate', authenticateUserToken)
+        this.app.post('/students/authenticate', authenticateUserToken)
         this.app.put('/elevate/:id', elevateUser)
         this.app.get('/login', logIn)
+        
 
         // Basic error handling
         this.app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -68,6 +69,7 @@ export default class WebServer {
         this.app.use((_req, res) => {
             res.status(404).send('404: Page not found.')
         })
+
     }
     start(port: number): Promise<void> {
         return new Promise<void>((resolve) => {
@@ -82,4 +84,6 @@ export default class WebServer {
         prisma.$disconnect()
         return this.closer()
     }
+    
 }
+

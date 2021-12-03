@@ -77,6 +77,14 @@ export const getStudents = async (req: Request, res: Response) => {
 
 export const getStudentById = async (req: Request, res: Response) => {
     const student = await prisma.students.findFirst({ where: { studyNumber: req.params.id }, include: { courses: true} })
+
+    if (!student) {
+        res.status(400).send({
+            message: `Could not fetch student with studyNumber ${req.params.id}.`
+        })
+        return
+    }
+
     const hej: Student = {
         name: student.name,
         studyNumber: student.studyNumber,
@@ -155,7 +163,7 @@ export const updateStudentName = async (req: Request, res: Response) => {
 }
 
 export const addStudentToCourse = async (req: Request, res: Response) => {
-    if (!jwtHandler.authorizeUser(req)) {
+    if (jwtHandler.authorizeUser(req)) {
         const currentUserStudyNumber = jwtHandler.getStudynumberFromRequest(req)
         const student = await prisma.students.findFirst({ where: { studyNumber: currentUserStudyNumber }, include: { courses: true } })
         const course = await prisma.courses.findFirst({ where: { courseNumber: req.body.id } })
