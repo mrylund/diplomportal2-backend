@@ -12,7 +12,7 @@
     "build": "tsc",
     "start": "node dist/main.js",
     "postinstall": "prisma generate",
-    "test": "jest --coverage",
+    "test": "jest --coverage --maxWorkers 1",
     "test:watch": "jest --watch"
   },
   "author": "",
