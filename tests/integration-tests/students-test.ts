@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 
+import { JWTHandler } from '../../src/login/jwtHandler'
+
 import 'jest';
 import * as express from 'express';
 import {
@@ -143,6 +145,46 @@ describe('Student route tests', () => {
             )
             .expect(400, done);
     });
+
+
+    const jwtHandler = new JWTHandler()
+    const token = jwtHandler.generateJwtToken('s185107')
+    test("Authenticate user", done => {
+        request(app).post("/student/authenticate").send({
+            authorization: token,
+        }).expect(200, done)
+    })
+
+    test("Current user without authorization", done => {
+        request(app)
+        .post("/students/current")
+        .expect(
+            {
+                message: 'Access denied. Token is invalid.'
+            }
+        )
+        .expect(403, done);
+    })
+
+    test("Current user with authorization", done => {
+        request(app)
+        .post("/students/current")
+        .send({
+            authorization: token,
+        })
+        .expect(
+            {
+                id: 1,
+                name: 'Martin Rylund',
+                studyNumber: 's185107',
+                isAdmin: true,
+                courses: [],
+                schedule: []
+              }
+        )
+        .expect(200, done);
+    })
+
 
 
     // TODO: Tests for current user, we have to mock current student data
