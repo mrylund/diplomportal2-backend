@@ -14,13 +14,12 @@ const request = require("supertest");
 
 describe('Student route tests', () => {
     let app: express.Application;
+    const prisma = new PrismaClient()
 
     beforeAll(async () => {
         app = await IntegrationHelpers.getApp();
-        const prisma = new PrismaClient()
         await prisma.courses.deleteMany({})
         await prisma.students.deleteMany({})
-
         await prisma.students.createMany({
             data: [
                 {
@@ -55,6 +54,17 @@ describe('Student route tests', () => {
                 },
             ],
         });
+
+        await prisma.courses.create({
+            data: {
+                courseNumber: '1337',
+                title: 'Budtz private course',
+                weekDay: 'Friday',
+                sheetsId: 'none',
+                startTime: '22:00',
+                endTime: '24:00',
+            }
+        })
     });
 
 
@@ -185,6 +195,86 @@ describe('Student route tests', () => {
         .expect(200, done);
     })
 
+
+    test("Update current user name", done => {
+        request(app)
+        .put("/students/current/name")
+        .send({
+            authorization: token,
+            name: 'Martin Rune Rylund'
+        })
+        .expect(
+            {
+                id: 1,
+                name: 'Martin Rune Rylund',
+                studyNumber: 's185107',
+                isAdmin: true
+              }
+        )
+        .expect(200, done);
+    })
+
+
+    test("Enroll student in course", done => {
+        request(app)
+        .put("/students/current/courses")
+        .send({
+            authorization: token,
+            id: '1337',
+        })
+        .expect(
+            { 
+                message: 'Student added to course.'
+            }
+        )
+        .expect(200, done);
+    })
+
+
+    test("Current user with courses", done => {
+        request(app)
+        .post("/students/current")
+        .send({
+            authorization: token,
+        })
+        // .expect( // TOO LONG, IT IS STUPID??!
+        //     {
+        //         id: 1,
+        //         name: 'Martin Rune Rylund',
+        //         studyNumber: 's185107',
+        //         isAdmin: true,
+        //         courses: [
+        //           {
+        //             id: 51,
+        //             courseNumber: '1337',
+        //             title: 'Budtz private course',
+        //             weekDay: 'Friday',
+        //             sheetsId: 'none',
+        //             timeSlot: null,
+        //             startTime: '22:00',
+        //             endTime: '24:00',
+        //           }
+        //         ],
+        //         schedule: [
+        //             {
+        //                 weekdayName: "Friday",
+        //                 courses: [
+        //                     {
+        //                         timeSlot: null,
+        //                         startTime: '22:00',
+        //                         endTime: '24:00',
+        //                         title: 'Budtz private course',
+        //                         courseNumber: '1337',
+        //                         sheetsId: 'none',
+
+        //                     }
+        //                 ]
+        //             }
+        //         ]
+        //     }
+        // )
+        .expect(200, done);
+    })
 
 
     // TODO: Tests for current user, we have to mock current student data
