@@ -45,12 +45,12 @@ export default class WebServer {
         this.app.get('/students', getStudents)
         this.app.get('/students/:id', getStudentById)
         this.app.post('/students', createStudent)
-        this.app.post('/student/current', getCurrentUser)
+        this.app.post('/students/current', getCurrentUser)
         this.app.put('/students/current/courses', addStudentToCourse)
         this.app.put('/students/current/name', updateStudentName)
         
         // Auth
-        this.app.post('/student/authenticate', authenticateUserToken)
+        this.app.post('/students/authenticate', authenticateUserToken)
         this.app.put('/elevate/:id', elevateUser)
         this.app.get('/login', logIn)
         

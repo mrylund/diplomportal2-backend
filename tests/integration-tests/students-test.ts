@@ -150,7 +150,7 @@ describe('Student route tests', () => {
     const jwtHandler = new JWTHandler()
     const token = jwtHandler.generateJwtToken('s185107')
     test("Authenticate user", done => {
-        request(app).post("/student/authenticate").send({
+        request(app).post("/students/authenticate").send({
             authorization: token,
         }).expect(200, done)
     })
