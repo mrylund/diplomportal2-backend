@@ -20,3 +20,5 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error(`Exit processing due to unhandledRejection`, reason, promise);
     process.exit(1);
 });
+
+module.exports = webServer

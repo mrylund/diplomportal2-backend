@@ -1,5 +1,13 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    setupFiles: ['dotenv/config'],
+    setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
+    roots: [
+      "./tests/",
+  ],
+  testMatch: [
+    "**/tests/**/*.[jt]s?(x)",
+  ]
   };
+
+  
