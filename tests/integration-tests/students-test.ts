@@ -133,6 +133,17 @@ describe('Student route tests', () => {
             .expect(200, done);
     });
 
+    test("Get non existing student", done => {
+        request(app)
+            .get("/students/s100000")
+            .expect(
+                {
+                    message: `Could not fetch student with studyNumber s100000.`
+                }
+            )
+            .expect(400, done);
+    });
+
 
     // TODO: Tests for current user, we have to mock current student data
 });
