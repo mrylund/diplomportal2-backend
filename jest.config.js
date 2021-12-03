@@ -6,7 +6,7 @@ module.exports = {
       "./tests/",
   ],
   testMatch: [
-    "**/tests/**/*.[jt]s?(x)",
+    "**/tests/**/*-test.[jt]s?(x)",
   ]
   };
 
