@@ -85,13 +85,13 @@ export const getStudentById = async (req: Request, res: Response) => {
         return
     }
 
-    const hej: Student = {
+    const _student: Student = {
         name: student.name,
         studyNumber: student.studyNumber,
         courses: student.courses as unknown as Course[],
         schedule: {}
     }
-    const schedule = buildSchedule(hej)
+    const schedule = buildSchedule(_student)
 
     student
     ? res.json({...student, schedule})
