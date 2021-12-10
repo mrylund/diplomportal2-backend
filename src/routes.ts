@@ -85,6 +85,7 @@ export const getStudentById = async (req: Request, res: Response) => {
         return
     }
 
+    //Create a student object to build a schedule
     const _student: Student = {
         name: student.name,
         studyNumber: student.studyNumber,
